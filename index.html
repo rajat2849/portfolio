@@ -556,15 +556,102 @@
     .anim-visible { animation: fadeInUp 0.55s ease forwards; }
 
     /* ── RESPONSIVE ── */
+    /* ── HAMBURGER ── */
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    .nav-hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--accent); border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile drawer */
+    .nav-drawer {
+      display: none; position: fixed; top: 57px; left: 0; right: 0;
+      background: rgba(10,10,15,0.97); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column; z-index: 99;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a {
+      padding: 1rem 1.5rem; color: var(--muted); text-decoration: none;
+      font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase;
+      border-bottom: 1px solid var(--border); transition: color 0.2s;
+    }
+    .nav-drawer a:hover { color: var(--accent); }
+
     @media (max-width: 768px) {
+      /* Nav */
       nav { padding: 1rem 1.5rem; }
       .nav-links { display: none; }
-      section { padding: 4rem 1.5rem; }
-      .hero-grid { grid-template-columns: 1fr; }
-      .hero-visual { display: none; }
-      .timeline::before { left: 24px; }
-      .tl-marker { width: 50px; }
+      .nav-hamburger { display: flex; }
+
+      /* Sections */
+      section { padding: 4rem 1.25rem; }
+
+      /* Hero */
+      #hero { padding: 7rem 1.25rem 8rem; }
+      .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-visual {
+        display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
+      }
+      .hero-photo-wrap { width: 150px; height: 150px; }
+      .hero-photo { width: 144px; height: 144px; }
+      .hero-card { width: 100%; max-width: 360px; }
+      .hero-name { font-size: clamp(2.2rem, 10vw, 3.5rem); }
+      .hero-stats { gap: 1.5rem; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+
+      /* Terminal */
+      .terminal-body { font-size: 0.72rem; padding: 1rem; overflow-x: auto; white-space: nowrap; }
+      .terminal-wrap { margin-top: 1.5rem; }
+
+      /* Skills grid */
+      .skills-grid { grid-template-columns: 1fr; }
+
+      /* Pillars */
+      .pillars-grid { grid-template-columns: 1fr; }
+
+      /* Timeline */
+      .timeline::before { left: 20px; }
+      #tl-vehicle { left: 12px; width: 26px; height: 26px; }
+      #tl-trail { left: 19px; }
+      .tl-item { gap: 1rem; }
+      .tl-marker { width: 44px; }
       .tl-dot { width: 14px; height: 14px; }
+      .tl-content { padding: 1.25rem; }
+      .tl-top { flex-direction: column; gap: 0.4rem; }
+      .tl-points li { font-size: 0.82rem; }
+
+      /* Projects */
+      .projects-grid { grid-template-columns: 1fr; }
+
+      /* Certs */
+      .cert-grid { grid-template-columns: 1fr; }
+
+      /* Education */
+      .edu-card { flex-direction: column; gap: 1rem; }
+
+      /* Contact */
+      .contact-links { flex-direction: column; align-items: stretch; }
+      .contact-link { justify-content: center; }
+
+      /* Highway stats */
+      .highway-header { flex-direction: column; }
+      .highway-stats { justify-content: flex-start; }
+      .hw-stat { text-align: left; }
+    }
+
+    @media (max-width: 400px) {
+      .hero-stats { gap: 1rem; }
+      .stat-num { font-size: 1.4rem; }
+      .tl-content { padding: 1rem; }
     }
   </style>
 </head>
@@ -581,7 +668,18 @@
     <li><a href="#certifications">Certs</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="nav-drawer" id="nav-drawer">
+  <a href="#pillars"      onclick="closeDrawer()">Approach</a>
+  <a href="#stack"        onclick="closeDrawer()">Stack</a>
+  <a href="#experience"   onclick="closeDrawer()">Experience</a>
+  <a href="#projects"     onclick="closeDrawer()">Projects</a>
+  <a href="#certifications" onclick="closeDrawer()">Certs</a>
+  <a href="#contact"      onclick="closeDrawer()">Contact</a>
+</div>
 
 <!-- ── HERO ── -->
 <section id="hero">
@@ -1177,6 +1275,18 @@
 </footer>
 
 <script>
+  // ── HAMBURGER MENU ──
+  const hamburger = document.getElementById('nav-hamburger');
+  const drawer    = document.getElementById('nav-drawer');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    drawer.classList.toggle('open');
+  });
+  function closeDrawer() {
+    hamburger.classList.remove('open');
+    drawer.classList.remove('open');
+  }
+
   // ── TERMINAL TYPING ANIMATION ──
   (function() {
     const out = document.getElementById('terminal-out');
